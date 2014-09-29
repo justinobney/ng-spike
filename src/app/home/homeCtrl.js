@@ -1,14 +1,12 @@
 'use strict';
 
-function HomeCtrl($q) {
+function HomeCtrl() {
 
   // ViewModel
   var vm = this;
 
   vm.title = 'Test Title';
   vm.number = 123;
-
-  console.log($q);
 }
 
 module.exports = HomeCtrl;
