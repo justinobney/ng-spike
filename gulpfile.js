@@ -2,6 +2,7 @@
 
 var gulp            = require('gulp'),
     gulpif          = require('gulp-if'),
+    clean           = require('gulp-clean'),
     runSequence     = require('run-sequence'),
     karma           = require('gulp-karma'),
     protractor      = require('gulp-protractor').protractor,
@@ -23,7 +24,7 @@ var gulp            = require('gulp'),
     morgan          = require('morgan'),
     express         = require('express'),
     livereload      = require('connect-livereload'),
-    livereloadport  = 35728,
+    livereloadport  = 35739,
     serverport      = 3000,
     isProd          = false;
 
@@ -46,10 +47,16 @@ server.all('/*', function(req, res) {
   Gulp Development/Production Tasks
  ***********************************************/
 
+gulp.task('clean', function(){
+  gulp
+    .src(['./build/*', './temp/*'], {read:false})
+    .pipe(clean());
+});
+
 // JSHint task
 gulp.task('lint', function() {
 
-  return gulp.src(['app/js/**/*.js', '!app/js/templates.js'])
+  return gulp.src(['src/app/**/*.js', '!src/app/templates.js'])
           .pipe(jshint())
           .pipe(jshint.reporter('default'));
 
@@ -60,7 +67,7 @@ gulp.task('browserify', function() {
 
   var b = browserify({
     basedir: '.',
-    entries: './app/js/main.js',
+    entries: './src/app/main.js',
     debug: true,
     insertGlobals: true
   });
@@ -86,7 +93,7 @@ gulp.task('browserify', function() {
 // Styles task
 gulp.task('styles', function() {
 
-  return gulp.src('app/styles/main.scss')
+  return gulp.src('src/styles/main.scss')
           // The onerror handler prevents Gulp from crashing when you make a mistake in your SASS
           .pipe(sass({
             style: isProd ? 'compressed' : 'expanded',
@@ -102,7 +109,7 @@ gulp.task('styles', function() {
 gulp.task('images', function() {
 
   // Run imagemin task on all images
-  return gulp.src('app/images/**/*')
+  return gulp.src('src/images/**/*')
           .pipe(imagemin({
               progressive: true,
               svgoPlugins: [{removeViewBox: false}],
@@ -116,15 +123,15 @@ gulp.task('images', function() {
 gulp.task('views', function() {
 
   // Put our index.html in the dist folder
-  gulp.src('app/index.html')
+  gulp.src('src/index.html')
     .pipe(gulp.dest('build/'));
 
-  // Process any other view files from app/views
-  return gulp.src('app/views/**/*.html')
+  // Process any other view files from src/views
+  return gulp.src('src/app/**/*.html')
           .pipe(templateCache({
             standalone: true
           }))
-          .pipe(gulp.dest('app/js'))
+          .pipe(gulp.dest('src/app'))
           .pipe(refresh(lrserver));
 
 });
@@ -132,16 +139,16 @@ gulp.task('views', function() {
 gulp.task('watch', function() {
 
   // Watch our scripts
-  gulp.watch(['app/js/**/*.js'],[
+  gulp.watch(['src/app/**/*.js'],[
     'lint',
     'browserify'
   ]);
   // Watch our styles
-  gulp.watch(['app/styles/**/*.scss'], [
+  gulp.watch(['src/styles/**/*.scss'], [
     'styles'
   ]);
   // Watch our views
-  gulp.watch(['app/index.html', 'app/views/**/*.html'], [
+  gulp.watch(['src/index.html', 'src/views/**/*.html'], [
     'views'
   ]);
 
@@ -162,7 +169,7 @@ gulp.task('dev', function() {
   lrserver.listen(livereloadport);
 
   // Run all tasks once
-  runSequence('styles', 'views', 'browserify');
+  runSequence('clean', 'styles', 'views', 'browserify');
 
   // Then, run the watch task to keep tabs on changes
   gulp.start('watch');

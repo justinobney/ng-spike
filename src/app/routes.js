@@ -1,8 +1,5 @@
 'use strict';
 
-/**
- * @ngInject
- */
 function Routes($stateProvider, $locationProvider, $urlRouterProvider) {
 
   $locationProvider.html5Mode(true);
@@ -10,8 +7,8 @@ function Routes($stateProvider, $locationProvider, $urlRouterProvider) {
   $stateProvider
   .state('Home', {
     url: '/',
-    controller: 'ExampleCtrl as home',
-    templateUrl: 'home.html',
+    controller: 'HomeCtrl as home',
+    templateUrl: 'home/index.html',
     title: 'Home'
   });
 

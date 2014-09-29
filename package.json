@@ -1,11 +1,11 @@
 {
-  "name": "angularjs-gulp-browserify-boilerplate",
+  "name": "",
   "version": "0.1.0",
-  "author": "Jake Marsh <jakemmarsh@gmail.com>",
-  "description": "Boilerplate using AngularJS, SASS, Gulp, and Browserify while also utilizing best practices.",
+  "author": "Justin Obney",
+  "description": "Angular Starter - Forked from https://github.com/jakemmarsh/angularjs-gulp-browserify-boilerplate",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jakemmarsh/angularjs-gulp-browserify-boilerplate.git"
+    "url": "https://github.com/justinobney/ng-spike.git"
   },
   "keywords": [
     "express",
@@ -18,7 +18,6 @@
     "protractor",
     "boilerplate"
   ],
-  "private": true,
   "engines": {
     "node": ">=0.10.26"
   },
@@ -52,7 +51,8 @@
     "gulp-protractor": "0.0.11",
     "gulp-imagemin": "^1.0.1",
     "imagemin-pngcrush": "^0.1.0",
-    "gulp-if": "^1.2.4"
+    "gulp-if": "^1.2.4",
+    "gulp-clean": "^0.3.1"
   },
   "scripts": {
     "pretest": "npm install",
